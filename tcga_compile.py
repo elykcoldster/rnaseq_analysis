@@ -1,6 +1,17 @@
 import atpy
 import numpy as np
 
+def extract_single_features(tumor_file):
+    tt = atpy.Table(tumor_file, type='ascii')
+    t_counts = tt.c
+
+    counts = []
+    
+    for i in range(0, len(t_counts)):
+        if isinstance(t_counts[i], np.int32):
+            counts.append(t_counts[i].astype(float))
+    return counts
+
 def extract_features(tumor_file, normal_file):
     tt = atpy.Table(tumor_file, type='ascii')
     tn = atpy.Table(normal_file, type='ascii')
