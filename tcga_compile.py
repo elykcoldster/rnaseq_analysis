@@ -6,7 +6,12 @@ def extract_features(tumor_file, normal_file):
     tn = atpy.Table(normal_file, type='ascii')
     t_counts = tt.c
     n_counts = tn.c
-    diff_counts = abs(t_counts - n_counts)
+
+    diff_counts = []
+    
+    for i in range(0, len(t_counts)):
+        
+        diff_counts = t_counts.astype(float) - n_counts.astype(float)
     
     # compile tpm data from atpy table -> normal and tumor table lengths should be equal
     diff_tpm = []
