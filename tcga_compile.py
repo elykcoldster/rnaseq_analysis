@@ -3,16 +3,17 @@ import numpy as np
 
 def extract_single_features(tumor_file):
     tt = atpy.Table(tumor_file, type='ascii')
-    t_counts = tt.c
+    data = tt.data
 
-    counts = []
+    tpm_col = 0
+    for i in range(0, len(data[0])):
+        if (is_float(data[0][i])):
+            tpm_col = i
     
-    for i in range(0, len(t_counts)):
-        if isinstance(t_counts[i], np.int32):
-            counts.append(t_counts[i].astype(float))
-        elif np.char.isnumeric(t_counts[i]):
-            counts.append(float(t_counts[i]))
-    return counts
+    tpm = []
+    for i in range(0, len(data)):
+        tpm.append(data[i][tpm_col])
+    return tpm
 
 def extract_features(tumor_file, normal_file):
     tt = atpy.Table(tumor_file, type='ascii')
@@ -33,3 +34,14 @@ def extract_features(tumor_file, normal_file):
 
     #features = np.concatenate(([diff_counts], [diff_tpm]), axis=0)
     return diff_counts
+
+def is_float(s):
+    try:
+        int(s)
+    except ValueError:
+        try:
+            float(s)
+            return True
+        except ValueError:
+            return False
+    return False
