@@ -7,7 +7,7 @@ def extract_single_features(tumor_file):
 
     tpm_col = 0
     for i in range(0, len(data[0])):
-        if (is_float(data[0][i])):
+        if type(data[0][i]) == np.float64:
             tpm_col = i
     
     tpm = []
