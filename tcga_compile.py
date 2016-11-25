@@ -10,13 +10,13 @@ def extract_features(tumor_file, normal_file):
     diff_counts = []
     
     for i in range(0, len(t_counts)):
-        
-        diff_counts = t_counts.astype(float) - n_counts.astype(float)
+        if isinstance(t_counts[i], np.int32) and isinstance(n_counts[i], np.int32):
+            diff_counts.append(t_counts[i].astype(float) - n_counts[i].astype(float))
     
     # compile tpm data from atpy table -> normal and tumor table lengths should be equal
     diff_tpm = []
     for i in range(0,len(tt)):
-        diff_tpm.append(tt.data[i][0] - tn.data[i][0])
+        diff_tpm.append(tt.data[i][0] - tn.data[i][1])
 
-    features = np.concatenate((diff_counts, diff_tpm), axis=1)
+    features = np.concatenate(([diff_counts], [diff_tpm]), axis=0)
     return features
