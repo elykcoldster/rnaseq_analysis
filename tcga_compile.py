@@ -10,6 +10,8 @@ def extract_single_features(tumor_file):
     for i in range(0, len(t_counts)):
         if isinstance(t_counts[i], np.int32):
             counts.append(t_counts[i].astype(float))
+        elif np.char.isnumeric(t_counts[i]):
+            counts.append(float(t_counts[i]))
     return counts
 
 def extract_features(tumor_file, normal_file):
