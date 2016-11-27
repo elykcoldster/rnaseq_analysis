@@ -1,6 +1,8 @@
 import numpy as np
 import os
 from sklearn.cluster import KMeans
+from sklearn.decomposition import PCA
+from sklearn.externals import joblib
 from tcga_compile import extract_features
 from tcga_compile import extract_single_features
 
@@ -18,5 +20,9 @@ for i in range(0, len(directories)):
 		cancfiles = os.listdir(curr_path + '/' + normcancer[0] + '/tcgaquant')
 		features.append(extract_single_features(curr_path + '/' + normcancer[0] + '/tcgaquant/' + cancfiles[0]))
 
+pca = PCA(n_components=24)
+pca.fit_transform(features)
 kmeans = KMeans(n_clusters=len(directories)).fit(features)
+joblib.dump(kmeans, 'kmeans.pkl')
+joblib.dump(pca, 'pca.pkl')
 print(kmeans.labels_)
