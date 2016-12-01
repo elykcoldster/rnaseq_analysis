@@ -11,14 +11,19 @@ from tcga_compile import extract_single_features
 #directories = ['brca'] # for Windows test
 directories = ['../TCGA_data/brca', '../TCGA_data/luad', '../TCGA_data/blca', '../TCGA_data/prad'] # for cluster unix use
 
+# TCGA Features
 features = []
+# Salmon Features
+salmon_features = []
 for i in range(0, len(directories)):
 	subdirs = os.listdir(path=directories[i])
 	for j in range(0, len(subdirs)):
 		curr_path = directories[i] + '/' + subdirs[j]
 		normcancer = os.listdir(path=curr_path)
-		cancfiles = os.listdir(curr_path + '/' + normcancer[0] + '/tcgaquant')
-		features.append(extract_single_features(curr_path + '/' + normcancer[0] + '/tcgaquant/' + cancfiles[0]))
+		tcgafiles = os.listdir(curr_path + '/' + normcancer[0] + '/tcgaquant')
+        salmonfiles = os.listdir(curr_path + '/' + normcancer[0] + '/salmon')
+		features.append(extract_tcga_features(curr_path + '/' + normcancer[0] + '/tcgaquant/' + tcgafiles[0]))
+        salmon_features.append(extract_salmon_features(curr_path + '/' + normcancer[0] + '/salmon/' + salmonfiles[0]))
 
 pca = PCA(n_components=24)
 pca.fit_transform(features)

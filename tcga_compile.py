@@ -1,7 +1,7 @@
 import atpy
 import numpy as np
 
-def extract_single_features(tumor_file):
+def extract_tcga_features(tumor_file):
     tt = atpy.Table(tumor_file, type='ascii')
     data = tt.data
 
@@ -14,6 +14,10 @@ def extract_single_features(tumor_file):
     for i in range(0, len(data)):
         tpm.append(data[i][tpm_col])
     return tpm
+
+def extract_salmon_features(tumor_file):
+    st = atpy.Table(tumor_file, type='ascii')
+    return st.NumReads
 
 def extract_features(tumor_file, normal_file):
     tt = atpy.Table(tumor_file, type='ascii')
