@@ -21,9 +21,10 @@ for i in range(0, len(directories)):
         curr_path = directories[i] + '/' + subdirs[j]
         normcancer = os.listdir(path=curr_path)
         tcgafiles = os.listdir(curr_path + '/' + normcancer[0] + '/tcgaquant')
-        salmonfiles = os.listdir(curr_path + '/' + normcancer[0] + '/salmon')
+        if os.path.isdir(curr_path + '/' + normcancer[0] + '/salmon'):
+            salmonfiles = os.listdir(curr_path + '/' + normcancer[0] + '/salmon')
+            salmon_features.append(extract_salmon_features(curr_path + '/' + normcancer[0] + '/salmon/quant.sf'))
         features.append(extract_tcga_features(curr_path + '/' + normcancer[0] + '/tcgaquant/' + tcgafiles[0]))
-        salmon_features.append(extract_salmon_features(curr_path + '/' + normcancer[0] + '/salmon/quant.sf'))
 
 ncomp = 24
 pca = PCA(n_components=ncomp)
