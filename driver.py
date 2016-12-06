@@ -55,6 +55,6 @@ nkcomp = 48
 kpca = PCA(n_components=nkcomp)
 kpca.fit_transform(kallisto_features)
 kkmeans = KMeans(n_clusters=len(directories)).fit(kallisto_features)
-joblib.dump(kkmeans, 'skmeans.pkl')
+joblib.dump(kkmeans, 'kkmeans.pkl')
 joblib.dump(kpca, 'kpca.pkl')
 print(kkmeans.labels_)
