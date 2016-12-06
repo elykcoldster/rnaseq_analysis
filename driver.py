@@ -32,7 +32,7 @@ for i in range(0, len(directories)):
 
         if os.path.isdir(curr_path + '/' + expression_paths[0] + '/kallisto'):
             if os.path.isfile(curr_path+'/'+expression_paths[0]+'/kallisto/abundance.tsv'):
-            kallisto_features.append(extract_kallisto_features(curr_path + '/' + expression_paths[0] + '/kallisto/abundance.tsv'))
+                kallisto_features.append(extract_kallisto_features(curr_path + '/' + expression_paths[0] + '/kallisto/abundance.tsv'))
 
 ncomp = 24
 pca = PCA(n_components=ncomp)
