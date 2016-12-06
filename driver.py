@@ -3,6 +3,7 @@ import os
 from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
 from sklearn.externals import joblib
+from tcga_compile import extract_kallisto_features
 from tcga_compile import extract_salmon_features
 from tcga_compile import extract_tcga_features
 
