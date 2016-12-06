@@ -19,6 +19,10 @@ def extract_salmon_features(tumor_file):
     st = atpy.Table(tumor_file, type='ascii')
     return st.TPM
 
+def extract_kallisto_features(tumor_file):
+    kt = atpy.Table(tumor_file, type='ascii')
+    return kt.tpm
+
 def extract_features(tumor_file, normal_file):
     tt = atpy.Table(tumor_file, type='ascii')
     tn = atpy.Table(normal_file, type='ascii')

@@ -15,17 +15,24 @@ directories = ['../TCGA_data/brca', '../TCGA_data/luad', '../TCGA_data/blca', '.
 features = []
 # Salmon Features
 salmon_features = []
+# Kallisto Features
+kallisto_features = []
 for i in range(0, len(directories)):
     subdirs = os.listdir(path=directories[i])
     for j in range(0, len(subdirs)):
         curr_path = directories[i] + '/' + subdirs[j]
-        normcancer = os.listdir(path=curr_path)
-        tcgafiles = os.listdir(curr_path + '/' + normcancer[0] + '/tcgaquant')
-        if os.path.isdir(curr_path + '/' + normcancer[0] + '/salmon'):
-            salmonfiles = os.listdir(curr_path + '/' + normcancer[0] + '/salmon')
-            if os.path.isfile(curr_path+'/'+normcancer[0]+'/salmon/quant.sf'):
-                salmon_features.append(extract_salmon_features(curr_path + '/' + normcancer[0] + '/salmon/quant.sf'))
-        features.append(extract_tcga_features(curr_path + '/' + normcancer[0] + '/tcgaquant/' + tcgafiles[0]))
+        expression_paths = os.listdir(path=curr_path)
+        tcgafiles = os.listdir(curr_path + '/' + expression_paths[0] + '/tcgaquant')
+        features.append(extract_tcga_features(curr_path + '/' + expression_paths[0] + '/tcgaquant/' + tcgafiles[0]))
+
+        if os.path.isdir(curr_path + '/' + expression_paths[0] + '/salmon'):
+            salmonfiles = os.listdir(curr_path + '/' + expression_paths[0] + '/salmon')
+            if os.path.isfile(curr_path+'/'+expression_paths[0]+'/salmon/quant.sf'):
+                salmon_features.append(extract_salmon_features(curr_path + '/' + expression_paths[0] + '/salmon/quant.sf'))
+
+        if os.path.isdir(curr_path + '/' + expression_paths[0] + '/kallisto'):
+            if os.path.isfile(curr_path+'/'+expression_paths[0]+'/kallisto/abundance.tsv'):
+            kallisto_features.append(extract_kallisto_features(curr_path + '/' + expression_paths[0] + '/kallisto/abundance.tsv'))
 
 ncomp = 24
 pca = PCA(n_components=ncomp)
@@ -40,5 +47,13 @@ spca = PCA(n_components=nscomp)
 spca.fit_transform(salmon_features)
 skmeans = KMeans(n_clusters=len(directories)).fit(salmon_features)
 joblib.dump(skmeans, 'skmeans.pkl')
-joblib.dump(pca, 'spca.pkl')
+joblib.dump(spca, 'spca.pkl')
 print(skmeans.labels_)
+
+nkcomp = 48
+kpca = PCA(n_components=nkcomp)
+kpca.fit_transform(kallisto_features)
+kkmeans = KMeans(n_clusters=len(directories)).fit(kallisto_features)
+joblib.dump(kkmeans, 'skmeans.pkl')
+joblib.dump(kpca, 'kpca.pkl')
+print(kkmeans.labels_)
