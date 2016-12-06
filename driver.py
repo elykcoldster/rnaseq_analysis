@@ -1,5 +1,6 @@
 import numpy as np
 import os
+import json
 from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
 from sklearn.externals import joblib

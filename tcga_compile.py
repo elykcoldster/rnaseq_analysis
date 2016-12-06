@@ -1,3 +1,4 @@
+from sklearn.externals import joblib
 import atpy
 import numpy as np
 
@@ -17,7 +18,9 @@ def extract_tcga_features(tumor_file):
 
 def extract_salmon_features(tumor_file):
     st = atpy.Table(tumor_file, type='ascii')
-    return st.TPM
+    tpm = st.TPM
+    counts = st.NumReads
+    return np.append(tpm,counts)
 
 def extract_kallisto_features(tumor_file):
     kt = atpy.Table(tumor_file, type='ascii')
@@ -53,3 +56,19 @@ def is_float(s):
         except ValueError:
             return False
     return False
+
+def quant(tcga, salmon, kallisto):
+    tcga_kmeans = joblib.load(tcga);
+    salmon_kmeans = joblib.load(salmon);
+    kallisto_kmeans = joblib.load(kallisto);
+
+    compile_labels(tcga_kmeans.labels_)
+    compile_labels(salmon_kmeans.labels_)
+    compile_labels(kallisto_kmeans.labels_)
+
+def compile_labels(labels):
+    counts = np.zeros([4, 1])
+    for i in range(0, len(labels)):
+        cluster = labels[i]
+        counts[cluster] += 1
+    print(counts/len(labels))
