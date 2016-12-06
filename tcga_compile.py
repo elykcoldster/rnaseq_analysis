@@ -17,7 +17,7 @@ def extract_tcga_features(tumor_file):
 
 def extract_salmon_features(tumor_file):
     st = atpy.Table(tumor_file, type='ascii')
-    return st.NumReads
+    return st.TPM
 
 def extract_features(tumor_file, normal_file):
     tt = atpy.Table(tumor_file, type='ascii')

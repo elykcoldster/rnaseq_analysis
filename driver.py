@@ -23,7 +23,8 @@ for i in range(0, len(directories)):
         tcgafiles = os.listdir(curr_path + '/' + normcancer[0] + '/tcgaquant')
         if os.path.isdir(curr_path + '/' + normcancer[0] + '/salmon'):
             salmonfiles = os.listdir(curr_path + '/' + normcancer[0] + '/salmon')
-            salmon_features.append(extract_salmon_features(curr_path + '/' + normcancer[0] + '/salmon/quant.sf'))
+            if os.path.isfile(curr_path+'/'+normcancer[0]+'/salmon/quant.sf'):
+                salmon_features.append(extract_salmon_features(curr_path + '/' + normcancer[0] + '/salmon/quant.sf'))
         features.append(extract_tcga_features(curr_path + '/' + normcancer[0] + '/tcgaquant/' + tcgafiles[0]))
 
 ncomp = 24
@@ -34,7 +35,8 @@ joblib.dump(kmeans, 'kmeans.pkl')
 joblib.dump(pca, 'pca.pkl')
 print(kmeans.labels_)
 
-spca = PCA(n_components=ncomp)
+nscomp = 48
+spca = PCA(n_components=nscomp)
 spca.fit_transform(salmon_features)
 skmeans = KMeans(n_clusters=len(directories)).fit(salmon_features)
 joblib.dump(skmeans, 'skmeans.pkl')
